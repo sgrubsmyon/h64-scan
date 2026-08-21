@@ -1,10 +1,41 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
+    import { onMount } from 'svelte';
 
-    let filename = '';
-    let message = '';
-    let isError = false;
+    let filename = $state('');
+    let message = $state('');
+    let isError = $state(false);
+    let scannerStatus = $state({ status: 'unknown', error: '' });
+    let isCheckingScanner = $state(true);
+    let checkInterval: ReturnType<typeof setInterval> | null = null;
 
+    // Funktion zum Prüfen des Scanner-Status
+    async function checkScanner() {
+        const response = await fetch('/');
+        const data = await response.json();
+        scannerStatus = data.scannerStatus;
+        isCheckingScanner = false;
+
+        if (scannerStatus.status !== 'OK') {
+            // Alle 5 Sekunden neu prüfen, bis der Scanner verfügbar ist
+            checkInterval = setInterval(async () => {
+                const res = await fetch('/');
+                const newData = await res.json();
+                scannerStatus = newData.scannerStatus;
+
+                if (scannerStatus.status === 'OK') {
+                    clearInterval(checkInterval);
+                }
+            }, 5000);
+        }
+    }
+
+    // Initialen Check beim Laden der Seite
+    onMount(() => {
+        checkScanner();
+    });
+
+    // Funktion zum Ausführen des Scans
     async function handleSubmit({ formData }) {
         const response = await fetch('/', {
             method: 'POST',
@@ -26,6 +57,23 @@
 <div class="container">
     <h1>Dokument scannen</h1>
 
+    <!-- Statusanzeige -->
+    {#if isCheckingScanner}
+        <div class="status checking">
+            <p>🔍 Scanner wird gesucht...</p>
+        </div>
+    {:else if scannerStatus.status === 'OK'}
+        <div class="status ok">
+            <p>✅ Scanner bereit: {scannerStatus.output}</p>
+        </div>
+    {:else}
+        <div class="status offline">
+            <p>❌ Scanner offline: {scannerStatus.error || 'Nicht gefunden.'}</p>
+            <p>Wird alle 5 Sekunden neu geprüft...</p>
+        </div>
+    {/if}
+
+    <!-- Scan-Formular -->
     <form method="POST" use:enhance={handleSubmit}>
         <label for="filename">Dateiname:</label>
         <input
@@ -35,9 +83,12 @@
             bind:value={filename}
             placeholder="z.B. rechnung_juli"
             required
+            disabled={scannerStatus.status !== 'OK'}
         />
 
-        <button type="submit">Scan starten</button>
+        <button type="submit" disabled={scannerStatus.status !== 'OK'}>
+            Scan starten
+        </button>
     </form>
 
     {#if message}
@@ -57,6 +108,28 @@
 
     h1 {
         color: #333;
+    }
+
+    .status {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .checking {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .ok {
+        background-color: #dff0d8;
+        color: #3c763d;
+    }
+
+    .offline {
+        background-color: #f2dede;
+        color: #a94442;
     }
 
     form {
@@ -84,7 +157,12 @@
         cursor: pointer;
     }
 
-    button:hover {
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
         background-color: #45a049;
     }
 

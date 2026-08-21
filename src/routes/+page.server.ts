@@ -5,31 +5,48 @@ import { join } from 'path';
 
 const execAsync = promisify(exec);
 
+// Funktion, um den Scanner-Status zu prüfen
+async function checkScannerStatus() {
+    try {
+        const { stdout, stderr } = await execAsync('scanimage -L');
+        if (stderr) {
+            return { status: 'offline', error: stderr };
+        }
+        return { status: 'OK', output: stdout };
+    } catch (error) {
+        return { status: 'offline', error: error.message };
+    }
+}
+
 // Funktion zum Ausführen des Scans
 export async function load({ request }) {
-    const formData = await request.formData();
-    const filename = formData.get('filename')?.trim() || 'scan';
+    // Status des Scanners prüfen
+    const scannerStatus = await checkScannerStatus();
+    return { scannerStatus };
 
-    if (!filename) {
-        return { success: false, error: 'Bitte einen Dateinamen angeben.' };
-    }
+    // const formData = await request.formData();
+    // const filename = formData.get('filename')?.trim() || 'scan';
 
-    try {
-        // 1. Scan ausführen und als PDF speichern
-        const outputPath = join(process.cwd(), 'static', `${filename}.pdf`);
-        const command = `scanimage --format=pdf > ${outputPath}`;
+    // if (!filename) {
+    //     return { success: false, error: 'Bitte einen Dateinamen angeben.' };
+    // }
 
-        const { stderr } = await execAsync(command);
+    // try {
+    //     // 1. Scan ausführen und als PDF speichern
+    //     const outputPath = join(process.cwd(), 'static', `${filename}.pdf`);
+    //     const command = `scanimage --format=pdf > ${outputPath}`;
 
-        if (stderr) {
-            console.error('Fehler beim Scannen:', stderr);
-            return { success: false, error: stderr };
-        }
+    //     const { stderr } = await execAsync(command);
 
-        // 2. Erfolg melden
-        return { success: true, filename };
-    } catch (error) {
-        console.error('Fehler:', error);
-        return { success: false, error: error.message };
-    }
+    //     if (stderr) {
+    //         console.error('Fehler beim Scannen:', stderr);
+    //         return { success: false, error: stderr };
+    //     }
+
+    //     // 2. Erfolg melden
+    //     return { success: true, filename };
+    // } catch (error) {
+    //     console.error('Fehler:', error);
+    //     return { success: false, error: error.message };
+    // }
 }
