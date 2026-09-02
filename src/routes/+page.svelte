@@ -68,11 +68,13 @@
         </div>
     {:else if scannerStatus.status === 'OK'}
         <div class="status ok">
-            <p>✅ Scanner bereit: {scannerStatus.output}</p>
+            <p>✅ Scanner bereit:</p>
+            <p>{scannerStatus.output}</p>
         </div>
     {:else}
         <div class="status offline">
-            <p>❌ Scanner offline: {scannerStatus.error || 'Nicht gefunden.'}</p>
+            <p>❌ Scanner offline:</p>
+            <p>{scannerStatus.error || 'Nicht gefunden.'}</p>
             <p>Wird alle 5 Sekunden neu geprüft...</p>
         </div>
     {/if}
