@@ -21,7 +21,7 @@ async function checkScannerStatus() {
     }
 }
 
-export async function POST({ request }) {
+export async function GET() {
     const scannerStatus = await checkScannerStatus();
     return { scannerStatus };
 }
