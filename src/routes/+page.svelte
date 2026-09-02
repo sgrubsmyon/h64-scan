@@ -29,6 +29,8 @@
                     clearInterval(checkInterval);
                 }
             }, 5000);
+        } else {
+            scannerStatus.output = data.output || '';
         }
     }
 
