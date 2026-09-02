@@ -13,7 +13,8 @@
     async function checkScanner() {
         const response = await fetch('/checkscanner');
         const data = await response.json();
-        scannerStatus = data.scannerStatus;
+        scannerStatus.status = data.status;
+        scannerStatus.error = data.error || '';
         isCheckingScanner = false;
 
         if (scannerStatus.status !== 'OK') {
@@ -21,8 +22,8 @@
             checkInterval = setInterval(async () => {
                 const res = await fetch('/checkscanner');
                 const newData = await res.json();
-                scannerStatus = newData.scannerStatus;
-
+                scannerStatus.status = newData.status;
+                scannerStatus.error = newData.error || '';
                 if (scannerStatus.status === 'OK') {
                     clearInterval(checkInterval);
                 }
