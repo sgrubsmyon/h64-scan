@@ -5,7 +5,7 @@
     let filename = $state('');
     let message = $state('');
     let isError = $state(false);
-    let scannerStatus = $state({ status: 'unknown', error: '' });
+    let scannerStatus = $state({ status: 'unknown', error: '', output: '' });
     let isCheckingScanner = $state(true);
     let checkInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -25,6 +25,7 @@
                 scannerStatus.status = newData.status;
                 scannerStatus.error = newData.error || '';
                 if (scannerStatus.status === 'OK') {
+                    scannerStatus.output = newData.output || '';
                     clearInterval(checkInterval);
                 }
             }, 5000);
