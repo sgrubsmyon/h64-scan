@@ -9,7 +9,6 @@ const execAsync = promisify(exec);
 async function checkScannerStatus() {
     try {
         const { stdout, stderr } = await execAsync('scanimage -L');
-        console.log({ stdout, stderr });
         if (stderr) {
             return new Response(JSON.stringify({ status: 'offline', error: stderr }), { status: 500 });
         }
