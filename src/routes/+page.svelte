@@ -11,7 +11,7 @@
 
     // Funktion zum Prüfen des Scanner-Status
     async function checkScanner() {
-        const response = await fetch('/');
+        const response = await fetch('/checkscanner');
         const data = await response.json();
         scannerStatus = data.scannerStatus;
         isCheckingScanner = false;
@@ -19,7 +19,7 @@
         if (scannerStatus.status !== 'OK') {
             // Alle 5 Sekunden neu prüfen, bis der Scanner verfügbar ist
             checkInterval = setInterval(async () => {
-                const res = await fetch('/');
+                const res = await fetch('/checkscanner');
                 const newData = await res.json();
                 scannerStatus = newData.scannerStatus;
 
@@ -37,7 +37,7 @@
 
     // Funktion zum Ausführen des Scans
     async function handleSubmit({ formData }) {
-        const response = await fetch('/', {
+        const response = await fetch('/scan', {
             method: 'POST',
             body: formData
         });
