@@ -40,8 +40,15 @@
     });
 
     // Funktion zum Ausführen des Scans
-    async function handleSubmit({ result }) {
+    async function handleSubmit({ formData }) {
+        const response = await fetch('/scan', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
         console.log('Scan result:', result);
+
         if (result.success) {
             message = `Scan erfolgreich unter ${result.filename}.pdf gespeichert!`;
             isError = false;
@@ -49,6 +56,8 @@
             message = result.error || 'Ein unbekannter Fehler ist aufgetreten.';
             isError = true;
         }
+
+        return response; // Prevents the default form submission
     }
 </script>
 
