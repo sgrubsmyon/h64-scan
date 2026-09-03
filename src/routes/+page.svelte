@@ -40,15 +40,8 @@
     });
 
     // Funktion zum Ausführen des Scans
-    async function handleSubmit({ formData }) {
-        const response = await fetch('/scan', {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
+    async function handleSubmit({ result }) {
         console.log('Scan result:', result);
-
         if (result.success) {
             message = `Scan erfolgreich unter ${result.filename}.pdf gespeichert!`;
             isError = false;
@@ -81,7 +74,7 @@
     {/if}
 
     <!-- Scan-Formular -->
-    <form method="POST" use:enhance={handleSubmit}>
+    <form method="POST" action="/scan" use:enhance={handleSubmit}>
         <label for="filename">Dateiname:</label>
         <input
             type="text"
