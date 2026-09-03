@@ -42,7 +42,7 @@
         const unsubscribe = page.subscribe((p) => {
             if (p.form?.success !== undefined) {
                 if (p.form.success) {
-                    message = `Scan erfolgreich unter ${p.form.filename}.pdf gespeichert!`;
+                    message = p.form.output || 'Scan erfolgreich durchgeführt.';
                     isError = false;
                 } else {
                     message = p.form.error || 'Ein unbekannter Fehler ist aufgetreten.';
