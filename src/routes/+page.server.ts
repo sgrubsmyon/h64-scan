@@ -1,4 +1,3 @@
-import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -19,7 +18,7 @@ export const actions = {
 			// const command = `scanimage --format=pdf > ${outputPath}`;
 			const command = `
                 # 1. Alle Seiten als PNG scannen
-                scanimage --source "ADF Duplex" --resolution 300 --format png --page-height 300 \
+                scanimage --source "ADF Duplex" --resolution 299.999 --format png --page-height 300 \
                     --batch="${outputPath}_%03d.png"
         
                 # 2. Zu einem einzelnen PDF zusammenfügen
@@ -29,7 +28,9 @@ export const actions = {
                 rm ${outputPath}_*.png
                 `;
 
-			const { stderr } = await execAsync(command);
+			const { stdout, stderr } = await execAsync(command);
+
+      console.log({ stdout, stderr });
 
 			if (stderr) {
 				return {
@@ -38,11 +39,10 @@ export const actions = {
 				};
 			}
 
-			// return json({ success: true, filename });
 			return {
 				success: true,
 				filename,
-				output: `Scan \`${filename}\` erfolgreich durchgeführt`
+				output: `Scan \`${filename}\` erfolgreich durchgeführt.\n\n${stdout}`
 			};
 		} catch (error) {
 			return {
