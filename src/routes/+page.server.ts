@@ -47,7 +47,7 @@ export const actions = {
         };
       }
 
-      if (stderr.includes('Error') || stderr.includes('error')) {
+      if (/error/i.test(stderr)) {
         return {
           success: false,
           error: 'Fehler beim Scannen:\n\n' + stderr
