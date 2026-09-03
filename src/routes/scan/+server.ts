@@ -11,8 +11,6 @@ export async function POST({ request }) {
 
     try {
         const outputPath = join(process.cwd(), 'static', `${filename}`);
-        console.log("Output path:", outputPath);
-        // const command = `scanimage --format=pdf > ${outputPath}`;
         const command = `
         # 1. Alle Seiten als PNG scannen
         scanimage --source "ADF Duplex" --resolution 300 --format png --page-height 300 \
