@@ -32,17 +32,32 @@ export const actions = {
 
       console.log({ stdout, stderr });
 
-			if (stderr) {
-				return {
-					success: false,
-					error: stderr
-				};
-			}
+      // It seems, stdout is always empty, but normal output goes into stderr, so we should not treat it as an error. Instead, we can check for specific error messages in stderr.
+			// if (stderr) {
+			// 	return {
+			// 		success: false,
+			// 		error: stderr
+			// 	};
+			// }
+
+      if (stderr.includes(' 0 pages scanned')) {
+        return {
+          success: false,
+          error: 'Keine Seiten gescannt'
+        };
+      }
+
+      if (stderr.includes('Error')) {
+        return {
+          success: false,
+          error: 'Fehler beim Scannen:\n\n' + stderr
+        };
+      }
 
 			return {
 				success: true,
 				filename,
-				output: `Scan \`${filename}\` erfolgreich durchgeführt.\n\n${stdout}`
+				output: `Scan \`${filename}\` erfolgreich durchgeführt.\n\n${stdout}\n\n${stderr}`
 			};
 		} catch (error) {
 			return {

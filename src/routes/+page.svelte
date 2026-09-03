@@ -95,7 +95,7 @@
 
     {#if message}
         <div class="message {isError ? 'error' : 'success'}">
-            {message}
+            {message.replaceAll('\n', '<br>')}
         </div>
     {/if}
 </div>
