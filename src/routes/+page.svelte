@@ -1,6 +1,7 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
     import { onMount } from 'svelte';
+    import { page } from '$app/stores';
 
     let filename = $state('');
     let message = $state('');
@@ -9,7 +10,6 @@
     let isCheckingScanner = $state(true);
     let checkInterval: ReturnType<typeof setInterval> | null = null;
 
-    // Funktion zum Prüfen des Scanner-Status
     async function checkScanner() {
         const response = await fetch('/checkscanner');
         const data = await response.json();
@@ -34,37 +34,31 @@
         }
     }
 
-    // Initialen Check beim Laden der Seite
+    // Initial check on page load
     onMount(() => {
         checkScanner();
-    });
 
-    // Funktion zum Ausführen des Scans
-    async function handleSubmit({ formData }) {
-        const response = await fetch('/scan', {
-            method: 'POST',
-            body: formData
+        // Watch for form submission results
+        const unsubscribe = page.subscribe((p) => {
+            if (p.form?.success !== undefined) {
+                if (p.form.success) {
+                    message = `Scan erfolgreich unter ${p.form.filename}.pdf gespeichert!`;
+                    isError = false;
+                } else {
+                    message = p.form.error || 'Ein unbekannter Fehler ist aufgetreten.';
+                    isError = true;
+                }
+            }
         });
 
-        const result = await response.json();
-        console.log('Scan result:', result);
-
-        if (result.success) {
-            message = `Scan erfolgreich unter ${result.filename}.pdf gespeichert!`;
-            isError = false;
-        } else {
-            message = result.error || 'Ein unbekannter Fehler ist aufgetreten.';
-            isError = true;
-        }
-
-        return response; // Prevents the default form submission
-    }
+        return unsubscribe;
+    });
 </script>
 
 <div class="container">
     <h1>Dokument scannen</h1>
 
-    <!-- Statusanzeige -->
+    <!-- Status display -->
     {#if isCheckingScanner}
         <div class="status checking">
             <p>🔍 Scanner wird gesucht...</p>
@@ -82,8 +76,8 @@
         </div>
     {/if}
 
-    <!-- Scan-Formular -->
-    <form method="POST" action="/scan" use:enhance={handleSubmit}>
+    <!-- Scan form -->
+    <form method="POST" use:enhance>
         <label for="filename">Dateiname:</label>
         <input
             type="text"
