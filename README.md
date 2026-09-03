@@ -27,6 +27,8 @@ npm run dev
 
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
+# Or with bun:
+bun --bun run dev
 ```
 
 ## Building
@@ -35,8 +37,18 @@ To create a production version of your app:
 
 ```sh
 npm run build
+# Or with bun:
+bun --bun run build
 ```
 
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+Then start the production server with
+
+```sh
+bun ./build/index.js
+```
+
+It listens on port 3000 by default; set the PORT environment variable to change it.
