@@ -30,8 +30,6 @@ export const actions = {
 
 			const { stdout, stderr } = await execAsync(command);
 
-      console.log({ stdout, stderr });
-
       // It seems, stdout is always empty, but normal output goes into stderr, so we should not treat it as an error. Instead, we can check for specific error messages in stderr.
 			// if (stderr) {
 			// 	return {
