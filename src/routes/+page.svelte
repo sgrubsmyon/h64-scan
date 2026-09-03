@@ -2,6 +2,7 @@
     import { enhance } from '$app/forms';
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
+    import DOMPurify from 'dompurify';
 
     let filename = $state('');
     let message = $state('');
@@ -95,7 +96,7 @@
 
     {#if message}
         <div class="message {isError ? 'error' : 'success'}">
-            {message.replaceAll('\n', '<br>')}
+            {@html DOMPurify.sanitize(message.replaceAll('\n', '<br>'))}
         </div>
     {/if}
 </div>

@@ -36,5 +36,8 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"dompurify": "^3.4.14"
+	}
 }
