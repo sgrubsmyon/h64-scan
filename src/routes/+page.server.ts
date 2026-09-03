@@ -10,8 +10,6 @@ export const actions = {
 		const formData = await request.formData();
 		const filename = formData.get('filename')?.toString()?.trim() || `scan_${Date.now()}`; // Default filename with timestamp if not provided
 
-		console.log('Scanning with filename:', filename);
-
 		try {
 			const outputPath = join(process.cwd(), 'static', `${filename}`);
 			const command = `
