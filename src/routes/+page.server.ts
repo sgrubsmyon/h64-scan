@@ -57,7 +57,7 @@ export const actions = {
 			return {
 				success: true,
 				filename,
-				output: `Scan erfolgreich unter \`${filename}\` gespeichert!\n\n${stdout}\n\n${stderr}`
+				output: `Scan erfolgreich unter \`${filename}\`.pdf gespeichert!\n\n${stdout}\n\n${stderr}`
 			};
 		} catch (error) {
 			return {
