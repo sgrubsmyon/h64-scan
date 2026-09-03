@@ -15,7 +15,7 @@ User=YOUR_USER
 WorkingDirectory=/home/YOUR_USER/path/to/my-app
 # the command to start the app
 # requires absolute paths
-ExecStart=/home/YOUR_USER/.bun/bin/bun run index.ts
+ExecStart=/home/YOUR_USER/.bun/bin/bun ./build/index.js
 # restart policy
 # one of {no|on-success|on-failure|on-abnormal|on-watchdog|on-abort|always}
 Restart=always
