@@ -18,7 +18,7 @@ export const actions = {
 			// const command = `scanimage --format=pdf > ${outputPath}`;
 			const command = `
                 # 1. Alle Seiten als PNG scannen
-                scanimage --source "ADF Duplex" --resolution 299.999 --format png --page-height 300 \
+                scanimage --source "ADF Duplex" --resolution 300 --format png --page-height 300 \
                     --batch="${outputPath}_%03d.png"
         
                 # 2. Zu einem einzelnen PDF zusammenfügen
