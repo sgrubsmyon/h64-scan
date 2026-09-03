@@ -7,7 +7,7 @@ const execAsync = promisify(exec);
 
 export async function POST({ request }) {
     const formData = await request.formData();
-    const filename = formData.get('filename')?.toString()?.trim() || 'scan';
+    const filename = formData.get('filename')?.toString()?.trim() || `scan_${Date.now()}`; // Default filename with timestamp if not provided
 
     try {
         const outputPath = join(process.cwd(), 'static', `${filename}`);

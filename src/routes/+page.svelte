@@ -47,6 +47,7 @@
         });
 
         const result = await response.json();
+        console.log('Scan result:', result);
 
         if (result.success) {
             message = `Scan erfolgreich unter ${result.filename}.pdf gespeichert!`;
@@ -88,7 +89,6 @@
             name="filename"
             bind:value={filename}
             placeholder="z.B. rechnung_juli"
-            required
             disabled={scannerStatus.status !== 'OK'}
         />
 
