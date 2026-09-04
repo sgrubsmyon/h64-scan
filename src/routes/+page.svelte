@@ -1,7 +1,6 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
     import { onMount } from 'svelte';
-    import { page } from '$app/stores';
     import DOMPurify from 'dompurify';
 
     let filename = $state('');
@@ -35,24 +34,21 @@
         }
     }
 
+    async function handleSubmit({ result }) {
+        if (result.success !== undefined) {
+            if (result.success) {
+                message = result.output || 'Scan erfolgreich durchgeführt.';
+                isError = false;
+            } else {
+                message = result.error || 'Ein unbekannter Fehler ist aufgetreten.';
+                isError = true;
+            }
+        }
+    }
+
     // Initial check on page load
     onMount(() => {
         checkScanner();
-
-        // Watch for form submission results
-        const unsubscribe = page.subscribe((p) => {
-            if (p.form?.success !== undefined) {
-                if (p.form.success) {
-                    message = p.form.output || 'Scan erfolgreich durchgeführt.';
-                    isError = false;
-                } else {
-                    message = p.form.error || 'Ein unbekannter Fehler ist aufgetreten.';
-                    isError = true;
-                }
-            }
-        });
-
-        return unsubscribe;
     });
 </script>
 
@@ -78,7 +74,7 @@
     {/if}
 
     <!-- Scan form -->
-    <form method="POST" use:enhance>
+    <form method="POST" use:enhance={handleSubmit}>
         <label for="filename">Dateiname: <i>(optional, Default: `scan_{Date.now()}`)</i></label>
         <input
             type="text"
