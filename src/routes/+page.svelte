@@ -4,11 +4,23 @@
     import DOMPurify from 'dompurify';
 
     let filename = $state('');
-    let message = $state('');
-    let isError = $state(false);
     let scannerStatus = $state({ status: 'unknown', error: '', output: '' });
     let isCheckingScanner = $state(true);
     let checkInterval: ReturnType<typeof setInterval> | null = null;
+
+    // Access props via $props() in runes mode
+    const { form } = $props();
+
+    // Derived state
+    let message = $derived(
+        form?.success !== undefined
+            ? form.success
+                ? form.output || 'Scan erfolgreich durchgeführt.'
+                : form.error || 'Ein unbekannter Fehler ist aufgetreten.'
+            : ''
+    );
+
+    let isError = $derived(form?.success === false);
 
     async function checkScanner() {
         const response = await fetch('/checkscanner');
@@ -32,28 +44,6 @@
         } else {
             scannerStatus.output = data.output || '';
         }
-    }
-
-    // Corrected handler: receives { formData, form }, returns Response
-    async function handleSubmit({ formData, form }) {
-        const response = await fetch(form.action, {
-            method: form.method,
-            body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success !== undefined) {
-            if (result.success) {
-                message = result.output || 'Scan erfolgreich durchgeführt.';
-                isError = false;
-            } else {
-                message = result.error || 'Ein unbekannter Fehler ist aufgetreten.';
-                isError = true;
-            }
-        }
-
-        return response; // Critical: prevents default submission
     }
 
     // Initial check on page load
