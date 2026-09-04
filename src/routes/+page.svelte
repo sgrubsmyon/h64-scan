@@ -34,7 +34,15 @@
         }
     }
 
-    async function handleSubmit({ result }) {
+    // Corrected handler: receives { formData, form }, returns Response
+    async function handleSubmit({ formData, form }) {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: formData
+        });
+
+        const result = await response.json();
+
         if (result.success !== undefined) {
             if (result.success) {
                 message = result.output || 'Scan erfolgreich durchgeführt.';
@@ -44,6 +52,8 @@
                 isError = true;
             }
         }
+
+        return response; // Critical: prevents default submission
     }
 
     // Initial check on page load
