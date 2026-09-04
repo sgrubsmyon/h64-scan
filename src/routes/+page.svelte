@@ -74,7 +74,7 @@
     {/if}
 
     <!-- Scan form -->
-    <form method="POST" use:enhance={handleSubmit}>
+    <form method="POST" use:enhance>
         <label for="filename">Dateiname: <i>(optional, Default: `scan_{Date.now()}`)</i></label>
         <input
             type="text"
