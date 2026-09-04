@@ -9,6 +9,8 @@
     let checkInterval: ReturnType<typeof setInterval> | null = null;
 
     // Access props via $props() in runes mode
+    // Form props are passed from the server after a form submission
+    // They contain the result of the document scanning operation, including success status and any output or error messages.
     const { form } = $props();
 
     // Derived state
