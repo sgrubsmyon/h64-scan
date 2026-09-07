@@ -105,7 +105,7 @@
     {/if}
 
     <button disabled={false} onclick={reset} class="reset-button" title="Zurücksetzen">
-        🗑
+        🗑🗑️
     </button>
 </div>
 
