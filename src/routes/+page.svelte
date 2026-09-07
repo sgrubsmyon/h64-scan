@@ -48,6 +48,12 @@
         }
     }
 
+    function reset() {
+        filename = '';
+        message = '';
+        isError = false;
+    }
+
     // Initial check on page load
     onMount(() => {
         checkScanner();
@@ -97,6 +103,9 @@
             {@html DOMPurify.sanitize(message.replaceAll('\n', '<br>'))}
         </div>
     {/if}
+    <button disabled={false} onclick={reset} class="reset-button">
+        Formular zurücksetzen
+    </button>
 </div>
 
 <style>
