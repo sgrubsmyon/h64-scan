@@ -11,6 +11,9 @@ After=network.target
 Type=simple
 # which user to use when starting the app
 User=YOUR_USER
+# the origin the site is accessed at; svelte-adapter-bun defaults to https,
+# which breaks SvelteKit's CSRF check for plain-HTTP access
+Environment=ORIGIN=http://123.123.123.123:3000
 # path to your application's root directory
 WorkingDirectory=/home/YOUR_USER/path/to/my-app
 # the command to start the app
