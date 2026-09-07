@@ -103,8 +103,9 @@
             {@html DOMPurify.sanitize(message.replaceAll('\n', '<br>'))}
         </div>
     {/if}
-    <button disabled={false} onclick={reset} class="reset-button">
-        Formular zurücksetzen
+
+    <button disabled={false} onclick={reset} class="reset-button" title="Zurücksetzen">
+        🗑
     </button>
 </div>
 
