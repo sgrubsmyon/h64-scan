@@ -115,6 +115,10 @@
         margin: 0 auto;
         padding: 2rem;
         font-family: Arial, sans-serif;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
 
     h1 {
