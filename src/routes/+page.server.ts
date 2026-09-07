@@ -26,7 +26,7 @@ export const actions = {
 
 			const { stdout, stderr } = await execAsync(command);
 
-      // It seems, stdout is always empty, but normal output goes into stderr, so we should not treat it as an error. Instead, we can check for specific error messages in stderr.
+			// It seems, stdout is always empty, but normal output goes into stderr, so we should not treat it as an error. Instead, we can check for specific error messages in stderr.
 			// if (stderr) {
 			// 	return {
 			// 		success: false,
@@ -34,24 +34,24 @@ export const actions = {
 			// 	};
 			// }
 
-      if (stderr.includes(' 0 pages scanned')) {
-        return {
-          success: false,
-          error: 'Keine Seiten gescannt'
-        };
-      }
+			if (stderr.includes(' 0 pages scanned')) {
+				return {
+					success: false,
+					error: 'Keine Seiten gescannt'
+				};
+			}
 
-      if (/error/i.test(stderr)) {
-        return {
-          success: false,
-          error: 'Fehler beim Scannen:\n\n' + stderr
-        };
-      }
+			if (/error/i.test(stderr)) {
+				return {
+					success: false,
+					error: 'Fehler beim Scannen:\n\n' + stderr
+				};
+			}
 
 			return {
 				success: true,
 				filename,
-				output: `Scan erfolgreich unter \`${filename}\`.pdf gespeichert!\n\n${stdout}${stdout ? '\n\n' : ''}${stderr}`
+				output: `Scan erfolgreich unter ${filename}.pdf gespeichert!\n\n${stdout}${stdout ? '\n\n' : ''}${stderr}`
 			};
 		} catch (error) {
 			return {
