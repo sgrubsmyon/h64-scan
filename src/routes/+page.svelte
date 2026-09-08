@@ -25,6 +25,7 @@
 
     let message = $state(getMessage(form));
     let isError = $state(form?.success === false);
+    let now_timestamp = $state(Date.now());
 
     $effect(() => {
         message = getMessage(form);
@@ -59,6 +60,7 @@
         filename = '';
         message = '';
         isError = false;
+        now_timestamp = Date.now();
     }
 
     // Initial check on page load
@@ -90,7 +92,7 @@
 
     <!-- Scan form -->
     <form method="POST" use:enhance>
-        <label for="filename">Dateiname: <i>(optional, Default: `scan_{Date.now()}`)</i></label>
+        <label for="filename">Dateiname ohne Endung: <i>(optional, Default: `scan_{now_timestamp}`)</i></label>
         <input
             type="text"
             id="filename"
