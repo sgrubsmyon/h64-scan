@@ -12,3 +12,5 @@ sudo systemctl daemon-reload
 sudo systemctl restart h64-scan
 
 sudo systemctl status h64-scan
+sleep 5
+sudo systemctl status h64-scan
