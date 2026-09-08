@@ -116,6 +116,8 @@
     <button disabled={false} onclick={reset} class="reset-button" title="Zurücksetzen">
         🗑️ Zurücksetzen
     </button>
+
+    <a class="attribution" href="https://www.flaticon.com/free-icons/scanner" title="scanner icons">Favicon icon created by Vectors Tank - Flaticon</a>
 </div>
 
 <style>
@@ -204,5 +206,17 @@
     .error {
         background-color: #f2dede;
         color: #a94442;
+    }
+
+    .attribution {
+        font-size: smaller;
+        color: #aaa;
+        text-align: center;
+        margin-top: 1rem;
+        text-decoration: none;
+    }
+    .attribution:hover {
+        text-decoration: underline;
+        color: #666;
     }
 </style>

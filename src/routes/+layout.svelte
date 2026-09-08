@@ -10,5 +10,3 @@
 </svelte:head>
 
 {@render children()}
-
-<a href="https://www.flaticon.com/free-icons/scanner" title="scanner icons">Favicon icon created by Vectors Tank - Flaticon</a>
