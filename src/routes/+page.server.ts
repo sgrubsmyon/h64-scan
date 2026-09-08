@@ -2,6 +2,9 @@ import type { Actions } from './$types';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { join } from 'path';
+import { env } from '$env/dynamic/private';
+
+const SCAN_TARGET_DIR = env.SCAN_TARGET_DIR ?? '~/paperless-inbox';
 
 const execAsync = promisify(exec);
 
@@ -11,7 +14,7 @@ export const actions = {
 		const filename = formData.get('filename')?.toString()?.trim() || `scan_${Date.now()}`; // Default filename with timestamp if not provided
 
 		try {
-			const outputPath = join(process.cwd(), 'static', `${filename}`);
+			const outputPath = join(SCAN_TARGET_DIR, filename);
 			const command = `
                 # 1. Alle Seiten als PNG scannen
                 scanimage --source "ADF Duplex" --resolution 300 --format png --page-height 300 \
