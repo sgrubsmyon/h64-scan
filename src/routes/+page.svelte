@@ -13,16 +13,23 @@
     // They contain the result of the document scanning operation, including success status and any output or error messages.
     const { form } = $props();
 
-    // Derived state
-    let message = $derived(
-        form?.success !== undefined
-            ? form.success
-                ? form.output || 'Scan erfolgreich durchgeführt.'
-                : form.error || 'Ein unbekannter Fehler ist aufgetreten.'
-            : ''
-    );
+    // Message state is kept as $state (not derived from the `form` prop) so that
+    // reset() can clear it. It is synced from `form` whenever that prop changes.
+    function getMessage(f: typeof form): string {
+        return f?.success !== undefined
+            ? f.success
+                ? f.output || 'Scan erfolgreich durchgeführt.'
+                : f.error || 'Ein unbekannter Fehler ist aufgetreten.'
+            : '';
+    }
 
-    let isError = $derived(form?.success === false);
+    let message = $state(getMessage(form));
+    let isError = $state(form?.success === false);
+
+    $effect(() => {
+        message = getMessage(form);
+        isError = form?.success === false;
+    });
 
     async function checkScanner() {
         const response = await fetch('/checkscanner');
