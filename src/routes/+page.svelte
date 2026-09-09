@@ -121,19 +121,29 @@
 </div>
 
 <style>
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
     .container {
         max-width: 600px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: clamp(1rem, 0.5rem + 5vw, 2rem);
         font-family: Arial, sans-serif;
+        font-size: clamp(1rem, 0.9rem + 0.6vw, 1.125rem);
+        line-height: 1.5;
 
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: clamp(0.75rem, 0.5rem + 2vw, 1rem);
     }
 
     h1 {
         color: #333;
+        font-size: clamp(1.5rem, 1.2rem + 2vw, 2rem);
+        line-height: 1.2;
     }
 
     .status {
@@ -141,6 +151,8 @@
         margin-bottom: 1rem;
         border-radius: 4px;
         text-align: center;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .checking {
@@ -166,21 +178,26 @@
 
     label {
         font-weight: bold;
+        line-height: 1.4;
     }
 
     input {
-        padding: 0.5rem;
+        padding: 0.75rem;
         border: 1px solid #ccc;
         border-radius: 4px;
+        font-size: inherit;
+        min-height: 44px;
     }
 
     button {
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1rem;
         background-color: #4CAF50;
         color: white;
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        font-size: inherit;
+        min-height: 44px;
     }
 
     button:disabled {
@@ -218,5 +235,22 @@
     .attribution:hover {
         text-decoration: underline;
         color: #666;
+    }
+
+    /* Small screens (phones) */
+    @media (max-width: 600px) {
+        .container {
+            /* use the full screen width, only small side padding */
+            max-width: 100%;
+        }
+
+        .status {
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        button {
+            width: 100%;
+        }
     }
 </style>
