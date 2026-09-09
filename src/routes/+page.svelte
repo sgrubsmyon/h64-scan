@@ -117,7 +117,7 @@
         🗑️ Zurücksetzen
     </button>
 
-    <a class="attribution" href="https://www.flaticon.com/free-icons/scanner" title="scanner icons">Favicon created by Vectors Tank - Flaticon</a>
+    <a target="_blank" class="attribution" href="https://www.flaticon.com/free-icons/scanner" title="scanner icons">Favicon created by Vectors Tank - Flaticon</a>
 </div>
 
 <style>
