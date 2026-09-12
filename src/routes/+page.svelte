@@ -92,7 +92,7 @@
 
     <!-- Scan form -->
     <form method="POST" use:enhance>
-        <label for="filename">Dateiname ohne Endung: <i>(optional, Default: `scan_{now_timestamp}`)</i></label>
+        <label for="filename">Dateiname ohne Endung: (optional)</label>
         <input
             type="text"
             id="filename"
