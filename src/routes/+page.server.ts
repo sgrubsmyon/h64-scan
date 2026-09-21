@@ -8,23 +8,26 @@ const SCAN_TARGET_DIR = env.SCAN_TARGET_DIR ?? '~/paperless-inbox';
 
 const execAsync = promisify(exec);
 
+const sanitizeOutputPath = (path: string): string =>
+	path.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '-');
+
 export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData();
 		const filename = formData.get('filename')?.toString()?.trim() || `scan_${Date.now()}`; // Default filename with timestamp if not provided
 
 		try {
-			const outputPath = join(SCAN_TARGET_DIR, filename);
+			const outputPath = sanitizeOutputPath(join(SCAN_TARGET_DIR, filename));
 			const command = `
                 # 1. Alle Seiten als PNG scannen
-                scanimage --source "ADF Duplex" --resolution 300 --format png --page-height 300 \
+                scanimage --source "ADF Duplex" --resolution 300 --format png --page-height 300 \\
                     --batch="${outputPath}_%03d.png"
         
                 # 2. Zu einem einzelnen PDF zusammenfügen
-                img2pdf ${outputPath}_*.png -o ${outputPath}.pdf
+                img2pdf "${outputPath}"_*.png -o "${outputPath}.pdf"
         
                 # 3. Temporäre PNG-Dateien aufräumen
-                rm ${outputPath}_*.png
+                rm "${outputPath}"_*.png
                 `;
 
 			const { stdout, stderr } = await execAsync(command);
