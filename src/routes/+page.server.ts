@@ -8,8 +8,8 @@ const SCAN_TARGET_DIR = env.SCAN_TARGET_DIR ?? '~/paperless-inbox';
 
 const execAsync = promisify(exec);
 
-const sanitizeFilename = (name: string): string =>
-	name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '-');
+const sanitizeFilename = (fname: string): string =>
+	fname.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '-');
 
 export const actions = {
 	default: async ({ request }) => {
