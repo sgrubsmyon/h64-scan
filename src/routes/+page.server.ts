@@ -15,9 +15,10 @@ export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData();
 		const filename = formData.get('filename')?.toString()?.trim() || `scan_${Date.now()}`; // Default filename with timestamp if not provided
+		const sanitizedFilename = sanitizeFilename(filename);
 
 		try {
-			const outputPath = join(SCAN_TARGET_DIR, sanitizeFilename(filename));
+			const outputPath = join(SCAN_TARGET_DIR, sanitizedFilename);
 			const command = `
                 # 1. Alle Seiten als PNG scannen
                 scanimage --source "ADF Duplex" --resolution 300 --format png --page-height 300 \
@@ -56,8 +57,8 @@ export const actions = {
 
 			return {
 				success: true,
-				filename,
-				output: `Scan erfolgreich unter ${filename}.pdf gespeichert!\n\n${stdout}${stdout ? '\n\n' : ''}${stderr}`
+				filename: sanitizedFilename,
+				output: `Scan erfolgreich unter ${sanitizedFilename}.pdf gespeichert!\n\n${stdout}${stdout ? '\n\n' : ''}${stderr}`
 			};
 		} catch (error) {
 			return {
